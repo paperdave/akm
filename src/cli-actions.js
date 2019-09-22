@@ -39,9 +39,9 @@ async function install() {
     const filename = path.join(process.env.HOME, '.profile');
 
     let content = fs.existsSync(filename) ? fs.readFileSync(filename).toString() : '';
-    content = content.replace(/(^|\n)# AKM BACKGROUND PROCESS\nsetsid npx akm daemon(\n|$)/, '\n');
+    content = content.replace(/(^|\n)# AKM BACKGROUND PROCESS\nsetsid -f sh -c "DISPLAY=:0;sleep 10;npx akm daemon"&(\n|$)/, '\n');
 
-    fs.writeFileSync(filename, trimLines(content + '\n# AKM BACKGROUND PROCESS\nsetsid npx akm daemon'));
+    fs.writeFileSync(filename, trimLines(content + '\n# AKM BACKGROUND PROCESS\nsetsid -f sh -c "DISPLAY=:0;sleep 10;npx akm daemon"&'));
 
     console.log('Installed in ' + filename);
     console.log('Notice: You will need to log out and log back in before you can actually use AKM.');
@@ -60,7 +60,7 @@ async function uninstall() {
     const filename = path.join(process.env.HOME, '.profile');
 
     let content = fs.existsSync(filename) ? fs.readFileSync(filename).toString() : '';
-    content = content.replace(/(^|\n)# AKM BACKGROUND PROCESS\nsetsid npx akm daemon(\n|$)/, '\n');
+    content = content.replace(/(^|\n)# AKM BACKGROUND PROCESS\nsetsid -f sh -c "DISPLAY=:0;sleep 10;npx akm daemon"&(\n|$)/, '\n');
 
     fs.writeFileSync(filename, trimLines(content));
 
