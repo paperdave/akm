@@ -1,4 +1,14 @@
 #!/usr/bin/node
+if(process.platform === 'linux') {
+  console.log('AKM is only for use on linux.')
+  console.log('      see alternatives:');
+  console.log('        -  AutoHotKey       (Windows) https://autohotkey.com/');
+  console.log('        -  Keyboard Maestro (MacOS)   https://keyboardmaestro.com/');
+  console.log();
+  process.exit();
+  return;
+}
+
 const cli = require('cli');
 
 cli.setApp('action-keyboard-manager', );
