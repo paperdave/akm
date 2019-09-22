@@ -1,0 +1,17 @@
+{
+  "name": "akm",
+  "version": "1.0.0",
+  "description": "Action Keyboard Manager. A tool to use `actkbd` to create dedicated macro keyboards.",
+  "dependencies": {
+    "@reverse/string": "^1.1.0",
+    "cli": "^1.0.1",
+    "fromentries": "^1.2.0",
+    "fs-extra": "^8.1.0",
+    "glob": "^7.1.4",
+    "inquirer": "^7.0.0",
+    "shelljs": "^0.8.3",
+    "sudo-prompt": "^9.0.0"
+  },
+  "bin": "./src/index.js",
+  "author": "Dave Caruso"
+}
