@@ -12,6 +12,7 @@
     "shelljs": "^0.8.3",
     "sudo-prompt": "^9.0.0"
   },
+  "license": "GPL-3.0",
   "bin": "./src/index.js",
-  "author": "Dave Caruso"
+  "author": "Dave Caruso <dave@davecode.me>"
 }
