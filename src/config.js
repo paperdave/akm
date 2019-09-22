@@ -16,7 +16,7 @@ function reloadConfig() {
 }
 
 function sendReload() {
-  require('./reload-daemon');
+  require('net').createConnection(32295).end('R');
 }
 
 function updateConfig(object) {
