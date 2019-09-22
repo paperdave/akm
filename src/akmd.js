@@ -41,32 +41,43 @@ async function load() {
   }));
 }
 
-net.createServer((socket) => {
-  socket.on('data', (data) => {
-    if (data.toString() === 'R') {
-      console.log('Reloading Configuration');
-      unload();
-      reloadConfig();
-      load();
-    }
-    if (data.toString() === 'P') {
-      unload();
-    }
-    if (data.toString() === 'U') {
-      load();
-    }
-    if (data.toString() === 'E') {
-      process.exit();
-    }
+function startup() {
+  const server = net.createServer((socket) => {
+    socket.on('data', (data) => {
+      if (data.toString() === 'R') {
+        console.log('Reloading Configuration');
+        unload();
+        reloadConfig();
+        load();
+      }
+      if (data.toString() === 'P') {
+        unload();
+      }
+      if (data.toString() === 'U') {
+        load();
+      }
+      if (data.toString() === 'E') {
+        process.exit();
+      }
+    });
   });
-}).listen(32295, '127.0.0.1');
+  server.listen(32295, '127.0.0.1', () => {
+    load();
 
-load();
+    startWatchingDevices(() => {
+      console.log('Reloading Macros');
+      unload();
+      load();
+    });
+  });
+  return server;
+}
 
-startWatchingDevices(() => {
-  console.log('Reloading Macros');
-  unload();
-  load();
+startup().on('error', () => {
+  net.createConnection(32295).end('E');
+  setTimeout(() => {
+    startup();
+  }, 2000);
 });
 
 process.on('SIGINT', async() => {
