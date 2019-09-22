@@ -1,7 +1,6 @@
 const path = require('path');
 const fs = require('fs-extra');
-const sudo = require('sudo-prompt');
-const configFileLocation = path.join(process.env.USER, '.akm.json');
+const configFileLocation = path.join(process.env.HOME, '.akm.json');
 
 let currentConfig = { macros: [] };
 
