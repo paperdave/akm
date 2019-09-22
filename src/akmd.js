@@ -68,3 +68,10 @@ startWatchingDevices(() => {
   unload();
   load();
 });
+
+process.on('SIGINT', async() => {
+  console.log('Shutting Down.')
+  await unload();
+  console.log();
+  process.exit();
+});
