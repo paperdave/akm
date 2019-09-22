@@ -1,6 +1,6 @@
 {
   "name": "akm",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Action Keyboard Manager. A tool to use `actkbd` to create dedicated macro keyboards.",
   "dependencies": {
     "@reverse/string": "^1.1.0",
