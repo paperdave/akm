@@ -2,13 +2,20 @@ console.log('Action Keyboard Manager Daemon. v' + require('../package.json').ver
 
 const { getConfig, reloadConfig } = require('./config');
 const { buildMacroFile, runActKbd } = require('./actkbd');
-const { findXInputDevices, disableXInputDevice, enableXInputDevice } = require('./xinput');
+const { listXInputDevices, disableXInputDevice, enableXInputDevice } = require('./xinput');
 const { getInputDevices } = require('./device-reader');
 const { startWatchingDevices } = require('./device-watcher');
 
 const net = require('net');
 
 let loadedMacros = [];
+
+function delay(ms) { return new Promise(x => setTimeout(x,ms))}
+
+function findXInputDevices(deviceList, name) {
+  name = name.toLowerCase().replace(/keyboard$/, '').trim();
+  return deviceList.filter(device => device.name.toLowerCase().startsWith(name));
+}
 
 async function unload() {
   await Promise.all(loadedMacros.map(async(macro) => {
@@ -21,6 +28,7 @@ async function unload() {
 }
 async function load() {
   const devices = await getInputDevices();
+  const xInputDeviceList = await listXInputDevices();
   const config = getConfig();
   await Promise.all(config.macros.map(async(macro, i) => {
     const device = devices.find(device => device.name === macro.device);
@@ -30,7 +38,7 @@ async function load() {
       console.log(`Loading ${macro.device} on ${eventName}.`);
 
       await buildMacroFile(macro.files, '/tmp/akm_macro_' + i);
-      const xInputDevices = await findXInputDevices(macro.device);
+      const xInputDevices = findXInputDevices(xInputDeviceList, macro.device);
       await disableXInputDevice(xInputDevices);
 
       const actkbd = await runActKbd(eventName, '/tmp/akm_macro_' + i);
@@ -41,14 +49,18 @@ async function load() {
   }));
 }
 
+async function reload() {
+  await unload();
+  await reloadConfig();
+  await load();
+}
+
 function startup() {
   const server = net.createServer((socket) => {
     socket.on('data', (data) => {
       if (data.toString() === 'R') {
         console.log('Reloading Configuration');
-        unload();
-        reloadConfig();
-        load();
+        reload();
       }
       if (data.toString() === 'P') {
         unload();
@@ -66,8 +78,7 @@ function startup() {
 
     startWatchingDevices(() => {
       console.log('Reloading Macros');
-      unload();
-      load();
+      reload();
     });
   });
   return server;

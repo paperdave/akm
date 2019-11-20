@@ -1,17 +1,19 @@
 const { getInputDevices } = require('./device-reader');
 
 function startWatchingDevices(onChange) {
-  (async function() {
-    let devices = (await getInputDevices()).map((device) => device.name).sort().join(';');
-    setInterval(async() => {
-      const newDevices = (await getInputDevices()).map((device) => device.name).sort().join(';');;
+  // watcher disabled to save battery
 
-      if (newDevices !== devices) {
-        devices = newDevices;
-        onChange();
-      }
-    }, 2000);
-  })();
+  // (async function() {
+  //   let devices = (await getInputDevices()).map((device) => device.name).sort().join(';');
+  //   setInterval(async() => {
+  //     const newDevices = (await getInputDevices()).map((device) => device.name).sort().join(';');;
+
+  //     if (newDevices !== devices) {
+  //       devices = newDevices;
+  //       onChange();
+  //     }
+  //   }, 2000);
+  // })();
 }
 
 module.exports = {
