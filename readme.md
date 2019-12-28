@@ -1,10 +1,20 @@
 # action keyboard manager
-This is a tool to use `actkbd` (Action Keyboard) to create dedicated macro keyboards. It handles selecting the right input device for actkbd to use and disabling the input inside of X. **It is only tested & maintained on Ubuntu 19**, but probably works on other versions of linux.
+This is a tool to use `actkbd` (Action Keyboard) to create dedicated macro keyboards. It handles selecting the right input device for actkbd to use and disabling the input inside of X. **It is only tested & maintained on Ubuntu 19.10**, but probably works on other versions of linux.
 
 ## install
-```
+```sh
 npm i -g akm
 akm install
+```
+
+you will also need actkbd, install that with
+```sh
+git clone https://github.com/thkala/actkbd.git
+cd actkbd
+sudo make install
+# cleaning
+cd ..
+rm -rf ./actkbd
 ```
 
 ## usage
